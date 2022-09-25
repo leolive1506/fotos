@@ -9,7 +9,7 @@
 {{--        {{dd($user)}}--}}
         <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
 
-            <form class="space-y-8 divide-y divide-gray-200 w-full" method="POST" action="{{ route('users.update', ['user' => auth()->user()->id]) }}">
+            <form class="space-y-8 divide-y divide-gray-200 w-full" method="POST" action="{{ route('users.update', ['user' => auth()->user()->id]) }}" enctype="multipart/form-data">
                 @method('PUT')
                 @csrf
                 <div class="space-y-8 divide-y divide-gray-200 sm:space-y-5 w-full">

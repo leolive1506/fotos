@@ -8,6 +8,7 @@ use App\Http\Requests\User\UserRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -75,8 +76,16 @@ class UserController extends Controller
     public function update(UserRequest $request, int $id): RedirectResponse
     {
         $user = User::findOrFail($id);
-
         $data = $request->all();
+
+        if ($request->hasFile('photo')) {
+            if (!empty($user->photo)) {
+                Storage::disk('local')->delete($user->photo);
+            }
+
+            $data['photo'] = $request->file('photo')?->store('avatar');
+        }
+
         $user->update($data);
 
         return redirect()->route('users.edit', $user->id)->with('success', 'Salvo com sucesso');
