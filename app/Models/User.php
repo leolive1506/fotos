@@ -56,4 +56,10 @@ class User extends Authenticatable
             'password' => [$userId ? 'nullable' : 'required', 'confirmed', Rules\Password::defaults()],
         ];
     }
+
+    public function getPhoto(): string
+    {
+        $photo = $this->photo;
+        return $photo ? asset($photo) : asset('profile-default.png');
+    }
 }

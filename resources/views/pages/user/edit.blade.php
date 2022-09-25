@@ -19,14 +19,14 @@
                         </div>
 
                         <x-form.container>
-                            <x-form.input-group name="name" label="Nome" />
-                            <x-form.input-group name="email" label="Email" />
-                            <x-form.input-group name="photo" label="Foto">
+                            <x-form.input-group name="name" label="Nome" :value="old('name', $user->name)"/>
+                            <x-form.input-group name="email" label="Email" :value="old('email', $user->email)" />
+                            <x-form.input-group name="photo" label="Foto" :value="old('photo', $user->photo)">
                                 <x-slot:input>
                                     <div class="mt-1 sm:col-span-2 sm:mt-0">
                                         <div class="flex items-center">
                                         <span class="h-12 w-12 overflow-hidden rounded-full bg-gray-100">
-                                            <x-icon style="other" name="profile" />
+                                            <img id="user-photo" src="{{ $user->getPhoto() }}" />
                                         </span>
                                         </div>
                                     </div>
@@ -50,14 +50,17 @@
                     </div>
                 </div>
             </form>
-            <div>
-                <h1>ERRORS</h1>
-                @foreach ($errors->all() as $error)
-                    <p>{{ $error }}</p>
-                @endforeach
-            </div>
-
         </div>
     </div>
+    <script>
+        const inputPhoto = document.querySelector("input#photo")
+        inputPhoto.onchange = event => {
+            const [file] = inputPhoto.files
+            if (file) {
+                const output = document.getElementById('user-photo');
+                output.src = URL.createObjectURL(file)
+            }
+        }
+    </script>
 </x-app-layout>
 
