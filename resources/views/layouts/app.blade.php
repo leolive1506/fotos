@@ -16,20 +16,27 @@
     <body class="font-sans antialiased">
         <x-notify.handle-notify />
 
-        <div class="min-h-screen bg-gray-100">
+        <div class="min-h-screen bg-gray-100" x-data="{ openMobile: false }">
             @include('layouts.navigation')
 
-            <!-- Page Heading -->
-            <header class="bg-white shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    {{ $header }}
+            <div class="min-h-full">
+                <div class="lg:pl-64 flex flex-col flex-1">
+                    <x-profile-section />
+                    <main class="flex-1 pb-8">
+                        @if (!empty($header))
+                            <!-- Page header -->
+                            <div class="bg-white shadow">
+                                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                                    <div class="py-6 md:flex md:items-center md:justify-between lg:border-t lg:border-gray-200">
+                                        {{ $header }}
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                        {{ $slot }}
+                    </main>
                 </div>
-            </header>
-
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+            </div>
         </div>
     </body>
 </html>

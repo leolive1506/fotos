@@ -1,11 +1,15 @@
-@props(['active'])
+@props(['active' => false, 'icon' => null])
 
 @php
-$classes = ($active ?? false)
-            ? 'inline-flex items-center px-1 pt-1 border-b-2 border-indigo-400 text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out'
-            : 'inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out';
+    $classActive = ($active)
+                    ? 'bg-cyan-900 text-white'
+                    : 'text-cyan-100 hover:text-white hover:bg-cyan-600';
+
 @endphp
 
-<a {{ $attributes->merge(['class' => $classes]) }}>
+<a {{ $attributes->merge(['class' => "bg-cyan-800 text-white group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md " . $classActive]) }} class= aria-current="page">
+    @if ($icon)
+        {{ $icon }}
+    @endif
     {{ $slot }}
 </a>
