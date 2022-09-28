@@ -24,7 +24,7 @@
                                     <x-slot:icon>
                                         <div class="flex items-center justify-center">
                                             <span class="h-12 w-12 overflow-hidden rounded-full bg-gray-100">
-                                                <img id="user-photo" src="{{ $user->getPhoto() }}" />
+                                                <img id="user-photo" src="{{ $user->photo }}" />
                                             </span>
                                         </div>
                                     </x-slot:icon>

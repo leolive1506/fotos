@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Profile\ProfileRequest;
 use App\Http\Requests\User\UserRequest;
 use App\Models\User;
+use App\Services\Storage\StorageService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -79,15 +80,11 @@ class UserController extends Controller
         $data = $request->all();
 
         if ($request->hasFile('photo')) {
-            if (!empty($user->photo)) {
-                Storage::disk('local')->delete($user->photo);
-            }
-
+            StorageService::delete($user->photo);
             $data['photo'] = $request->file('photo')?->store('avatar');
         }
 
         $user->update($data);
-
         return redirect()->route('users.edit', $user->id)->with('success', 'Salvo com sucesso');
     }
 

@@ -48,18 +48,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public static function rules($userId)
+    public static function rules($userId): array
     {
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $userId],
             'password' => [$userId ? 'nullable' : 'required', 'confirmed', Rules\Password::defaults()],
         ];
-    }
-
-    public function getPhoto(): string
-    {
-        $photo = $this->photo;
-        return $photo ? asset($photo) : asset('profile-default.png');
     }
 }
