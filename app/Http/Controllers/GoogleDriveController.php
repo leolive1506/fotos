@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\Google\StoreFileDriveJob;
+use App\Services\Google\GoogleService;
 use Exception;
 use Google\Client;
 use Google\Service\Drive;
@@ -13,19 +15,12 @@ class GoogleDriveController extends Controller
 {
     public function create()
     {
-        $client = new \Google\Client();
-        $client->setAuthConfig(base_path(env('GOOGLE_AUTH_CONFIG')));
-        $redirect_uri = 'http://localhost:8000';
-        $client->setRedirectUri($redirect_uri);
-        $client->addScope(Google\Service\Drive::DRIVE);
-
-        $authUrl = $client->createAuthUrl();
-        return view('pages.google.drive.create', compact('authUrl'));
+        return view('pages.google.drive.create');
     }
 
     public function store(Request $request)
     {
-        dd($request->file('photo')->store('', "google"));
-        dd($request->all());
+        dispatch(new StoreFileDriveJob('photo'));
+        return redirect()->back()->with('success', 'Na fila  para upload');
     }
 }

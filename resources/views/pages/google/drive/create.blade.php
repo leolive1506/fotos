@@ -7,9 +7,6 @@
 
     <x-utils.container>
         <form class="w-full" method="POST" action="{{ route('drive.store') }}" enctype="multipart/form-data">
-            <div class="request">
-                <a href='{{ $authUrl }}'>Connect Me!</a>
-              </div>
             @csrf
             <div class="space-y-8 divide-y divide-gray-200 sm:space-y-5 w-full">
                 <div>

@@ -2,12 +2,15 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\GoogleDriveController;
+use App\Services\Google\GoogleService;
 use Masbug\Flysystem\GoogleDriveAdapter;
 use League\Flysystem\Filesystem;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
 use Google;
 use Illuminate\Filesystem\FilesystemAdapter;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 
@@ -30,14 +33,10 @@ class GoogleDriveProvider extends ServiceProvider
      */
     public function boot()
     {
-        $client = new \Google\Client();
-        $client->setApplicationName('My perfect princess');
-        $client->setAuthConfig(base_path(env('GOOGLE_AUTH_CONFIG')));
-        $redirect_uri = 'http://localhost:8000';
-        $client->setRedirectUri($redirect_uri);
-        $client->addScope(Google\Service\Drive::DRIVE);
+        $client = (new GoogleService())?->client;
 
         $tokenExists = !empty(Cache::get('upload_token'));
+
         if ($tokenExists) {
             \Log::info('Token already exists');
             $client->setAccessToken(Cache::get('upload_token'));
@@ -59,20 +58,22 @@ class GoogleDriveProvider extends ServiceProvider
             }
         }
 
-        if (empty(Cache::get('upload_token'))) {
-            \Log::info('Token not found');
-            // dd('oi t', Cache::get('upload_token'));
-            $url = $client->createAuthUrl();
-            \Log::info('auth_url ' . $url);
-            return Redirect::to($url);
-        }
+        // if (empty(Cache::get('upload_token'))) {
+        //     \Log::info('Token not found');
+        //     $authUrl = $client->createAuthUrl();
+        //     $response = Http::get($authUrl);
+        //     dd($response);
+        //     return (new GoogleDriveController())->redirectLoginGoogle();
+        // }
 
         \Log::debug($client->getAccessToken());
 
         $service = new \Google\Service\Drive($client);
         \Log::info('final fluxo');
         Storage::extend('google', function ($app, $config) use ($service) {
-            $adapter = new GoogleDriveAdapter($service, $config['folderId']);
+            $adapter = new GoogleDriveAdapter($service, '',     [
+                'teamDriveId' => $config['folderId']
+            ]);
             return new FilesystemAdapter(
                 new Filesystem($adapter, $config),
                 $adapter,

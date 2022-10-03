@@ -21,7 +21,8 @@ Route::get('/', function () {
 
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('users', UserController::class);
-    Route::prefix('drive')->group(function () {
+    Route::group(['prefix' => 'drive', 'middleware' => 'token.google'], function () {
+        Route::get('/login', [GoogleDriveController::class, 'redirectLoginGoogle'])->name('drive.redirect');
         Route::get('create', [GoogleDriveController::class, 'create'])->name('drive.create');
         Route::post('/', [GoogleDriveController::class, 'store'])->name('drive.store');
     });
