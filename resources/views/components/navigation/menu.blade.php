@@ -6,4 +6,10 @@
         </x-slot:icon>
         Dashboard
     </x-nav-link>
+    <x-nav-link :href="route('drive.create')" :active="request()->routeIs('drive.create')">
+        <x-slot:icon>
+            <x-icon name="home" :class="$classIcon" />
+        </x-slot:icon>
+        Drive
+    </x-nav-link>
 </div>

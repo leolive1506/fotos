@@ -1,30 +1,27 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Editar usuário
+            Salvar no drive
         </h2>
     </x-slot>
 
     <x-utils.container>
-        <form class="w-full" method="POST" action="{{ route('users.update', ['user' => auth()->user()->id]) }}" enctype="multipart/form-data">
-            @method('PUT')
+        <form class="w-full" method="POST" action="{{ route('drive.store') }}" enctype="multipart/form-data">
+            <div class="request">
+                <a href='{{ $authUrl }}'>Connect Me!</a>
+              </div>
             @csrf
             <div class="space-y-8 divide-y divide-gray-200 sm:space-y-5 w-full">
                 <div>
-                    <div>
-                        <h3 class="text-lg font-medium leading-6 text-gray-900">Perfil</h3>
-                    </div>
-
                     <x-form.container>
-                        <x-form.input-group name="name" label="Nome" :value="old('name', $user->name)"/>
-                        <x-form.input-group name="email" label="Email" :value="old('email', $user->email)" />
+                        <x-form.input-group name="name" label="Nome""/>
                         <x-form.input-group name="photo" label="Cover photo">
                             <x-slot:input>
                                 <x-form.input-upload name="photo">
                                     <x-slot:icon>
                                         <div class="flex items-center justify-center">
                                             <span class="h-12 w-12 overflow-hidden rounded-full bg-gray-100">
-                                                <img id="user-photo" src="{{ asset($user->photo) }}" />
+                                                <img id="user-photo" src="{{ asset(auth()->user()->photo) }}" />
                                             </span>
                                         </div>
                                     </x-slot:icon>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GoogleDriveController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +21,11 @@ Route::get('/', function () {
 
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('users', UserController::class);
+    Route::prefix('drive')->group(function () {
+        Route::get('create', [GoogleDriveController::class, 'create'])->name('drive.create');
+        Route::post('/', [GoogleDriveController::class, 'store'])->name('drive.store');
+    });
+
 });
 
 Route::get('/dashboard', function () {

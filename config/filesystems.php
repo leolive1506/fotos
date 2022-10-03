@@ -63,6 +63,12 @@ return [
             'throw' => false,
         ],
 
+        'google' => [
+            'driver' => 'google',
+            'authConfigJson' => env('GOOGLE_AUTH_CONFIG'),
+            'folderId' => env('GOOGLE_FOLDER_ID'),
+        ],
+
     ],
 
     /*
