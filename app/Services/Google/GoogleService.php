@@ -11,13 +11,12 @@ class GoogleService
 
     public function __construct(
         public string $appName = 'My perfect princess',
-        public string $redirect_uri = 'http://localhost:8000',
         public string $scope = Drive::DRIVE
     ) {
         $this->client = new Client();
         $this->client->setApplicationName($this->appName);
         $this->client->setAuthConfig(base_path(env('GOOGLE_AUTH_CONFIG')));
-        $this->client->setRedirectUri($this->redirect_uri);
+        $this->client->setRedirectUri(env('GOOGLE_REDIRECT_URL'));
         $this->client->addScope($this->scope);
     }
 }
